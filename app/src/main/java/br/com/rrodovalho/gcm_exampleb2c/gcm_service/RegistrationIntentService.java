@@ -12,6 +12,10 @@ import java.io.IOException;
 
 import br.com.rrodovalho.gcm_exampleb2c.MainActivity;
 import br.com.rrodovalho.gcm_exampleb2c.domain.User;
+import br.com.rrodovalho.gcm_exampleb2c.network.ConnAPI;
+import br.com.rrodovalho.gcm_exampleb2c.network.ConnManager;
+import retrofit.Call;
+
 
 /**
  * Created by rrodovalho on 10/01/16.
@@ -44,10 +48,10 @@ public class RegistrationIntentService extends IntentService {
                     Log.i(LOG, "TOKEN: " + token);
 
 
-                    //preferences.edit().putBoolean("status", token != null && token.trim().length() > 0).apply();
+                    preferences.edit().putBoolean("status", token != null && token.trim().length() > 0).apply();
 
 
-//                    sendRegistrationId(token);
+                    sendRegistrationId(token);
                 }
 
 
@@ -62,10 +66,19 @@ public class RegistrationIntentService extends IntentService {
         User user = new User();
         user.setRegistrationId( token );
 
-        //TODO - make a retrofit call
-        /*NetworkConnection
-                .getInstance(this)
-                .execute(new WrapObjToNetwork(user, "save-user"), RegistrationIntentService.class.getName());*/
+        ConnManager connManager = ConnManager.getInstance();
+        ConnAPI connAPI = connManager.getConnAPI();
+
+        Call<User> callRegisterUser = connAPI.registerUser(user);
+
+        try {
+            boolean sucess = callRegisterUser.execute().isSuccess();
+
+            //TODO - Handle status
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
