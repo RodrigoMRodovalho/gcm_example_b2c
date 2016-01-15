@@ -11,6 +11,6 @@ import retrofit.http.POST;
  */
 public interface ConnAPI {
 
-    @POST("/user/register/")
+    @POST("/user/register")
     Call<User> registerUser(@Body User user);
 }

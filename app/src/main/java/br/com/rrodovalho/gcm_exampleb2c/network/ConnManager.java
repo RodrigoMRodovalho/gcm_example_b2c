@@ -8,7 +8,7 @@ import retrofit.Retrofit;
  */
 public class ConnManager {
 
-    private static final String API = "";
+    private static final String API = "http://192.168.25.3:8080";
     private ConnAPI connAPI = null;
     private static ConnManager instance = null;
 
